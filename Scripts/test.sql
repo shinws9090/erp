@@ -25,3 +25,9 @@ select empname,empno
 	join title t 
 	on e.title =t.tno 
 	where t.tno = 5;
+	
+select empname,empno
+	from employee e 
+	join department d 
+	on e.dept = d.deptno 
+	where d.deptno = 1;

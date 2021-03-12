@@ -67,6 +67,7 @@ public class TitleManager extends JFrame implements ActionListener {
 		JPopupMenu popupMenu = createPopupMenu();
 		pList.setPopupMenu(popupMenu);
 	}
+	
 
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();

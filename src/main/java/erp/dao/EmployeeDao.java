@@ -2,6 +2,7 @@ package erp.dao;
 
 import java.util.List;
 
+import erp.dto.Department;
 import erp.dto.Employee;
 import erp.dto.Title;
 
@@ -15,6 +16,7 @@ public interface EmployeeDao {
 
 	List<Employee> selectJoinEmployeeByAllSimple();
 	List<Employee> selectJoinEmployeeByTitle(Title title);
+	List<Employee> selectJoinEmployeeBydepartment(Department department);
 	
 
 }

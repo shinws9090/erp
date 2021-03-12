@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import erp.ui.DeprManager;
 import erp.ui.TitleManager;
 
 import java.awt.GridLayout;
@@ -18,6 +19,7 @@ public class Main extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton btnTitle;
+	private JButton btnDept;
 
 	/**
 	 * Launch the application.
@@ -53,7 +55,8 @@ public class Main extends JFrame implements ActionListener {
 		btnTitle.addActionListener(this);
 		contentPane.add(btnTitle);
 		
-		JButton btnDept = new JButton("부서관리");
+		btnDept = new JButton("부서관리");
+		btnDept.addActionListener(this);
 		contentPane.add(btnDept);
 		
 		JButton btnEmp = new JButton("사원관리");
@@ -61,12 +64,19 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnDept) {
+			actionPerformedBtnDept(e);
+		}
 		if (e.getSource() == btnTitle) {
 			actionPerformedBtnTitle(e);
 		}
 	}
 	protected void actionPerformedBtnTitle(ActionEvent e) {
 		TitleManager frame = new TitleManager();
+		frame.setVisible(true);
+	}
+	protected void actionPerformedBtnDept(ActionEvent e) {
+		DeprManager frame = new DeprManager();
 		frame.setVisible(true);
 	}
 }
