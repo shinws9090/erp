@@ -8,10 +8,7 @@ import erp.service.TitleService;
 public class TitleTablePanel extends AbstractCustomTablePanel<Title> {
 	private TitleService service;
 	
-	@Override
-	public Object[][] getData() {
-		return null;
-	}
+
 
 	@Override
 	public String[] getClumnNames() {

@@ -110,6 +110,7 @@ public class DeprManager extends JFrame implements ActionListener {
 			}
 			}catch(NotSelectedException | SqlConstraintException e1){
 				JOptionPane.showMessageDialog(null, e1.getMessage());
+				e1.printStackTrace();
 			}catch(NullPointerException e1){
 				JOptionPane.showMessageDialog(null, "없듬");
 			}catch(Exception e1) {

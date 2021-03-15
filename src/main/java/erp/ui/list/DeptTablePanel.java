@@ -13,10 +13,7 @@ public class DeptTablePanel extends AbstractCustomTablePanel<Department> {
 		
 	}
 
-	@Override
-	public Object[][] getData() {
-		return null;
-	}
+	
 
 	@Override
 	public String[] getClumnNames() {

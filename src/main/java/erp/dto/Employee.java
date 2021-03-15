@@ -7,6 +7,7 @@ public class Employee {
 	private Employee manager;
 	private int salary;
 	private Department dept;
+	
 	public Employee() {
 	}
 	public Employee(int empno) {
