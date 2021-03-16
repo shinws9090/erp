@@ -30,6 +30,19 @@ public class EmployeeService {
 	public List<Employee> showEmpListByTitle(Title title){
 		return empDao.selectJoinEmployeeByTitle(title);
 	}
+	public List<Employee> showEmpListByAll(){
+		return empDao.selectJoinEmployeeByAllSimple();
+	}
+	
+	public void addEmployee(Employee employee) {
+		empDao.insertEmployee(employee);
+	}
+	public void removeEmployee(Employee employee) {
+		empDao.deleteEmployee(employee);
+	}
+	public void upEmployee(Employee employee) {
+		empDao.updateEmployee(employee);
+	}
 	
 	
 	

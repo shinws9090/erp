@@ -12,7 +12,7 @@ import javax.swing.border.TitledBorder;
 import erp.dto.Department;
 import erp.ui.exception.InvalidCheckException;
 
-public class DeptPanel extends JPanel {
+public class DeptPanel extends AbstractContentPanel<Department> {
 	private JTextField tfDeptno;
 	private JTextField tfDeptName;
 	private JTextField tfFloor;
@@ -31,10 +31,8 @@ public class DeptPanel extends JPanel {
 
 	public DeptPanel() {
 
-		initialize();
 	}
-
-	private void initialize() {
+	public void initialize() {
 		setForeground(Color.BLACK);
 		setBackground(new Color(255, 250, 240));
 		setBorder(new TitledBorder(null, "부서정보", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -67,12 +65,45 @@ public class DeptPanel extends JPanel {
 		tfFloor.setColumns(10);
 		add(tfFloor);
 	}
+//
+//	public Department getDepartment() {
+//		validCheck();
+//
+//		int deptNo = Integer.parseInt(tfDeptno.getText().trim());
+//		String deptName = tfDeptName.getText().trim();
+//		int floor = Integer.parseInt(tfFloor.getText().trim());
+//
+//		return new Department(deptNo, deptName, floor);
+//	}
+//
+//	public void setDepartment(Department department) {
+////		tfDeptno.setText(String.valueOf(department.getDeptNo()));
+//		tfDeptno.setText(department.getDeptNo() + "");
+//		tfDeptName.setText(department.getDeptName() + "");
+//		tfFloor.setText(department.getFloor() + "");
+//
+//	}
 
-	public Department getDepartment() {
+	@Override
+	public void clearTf() {
+//		tfDeptno.setText(String.valueOf(department.getDeptNo()));
+		tfDeptno.setText("");
+		tfDeptName.setText("");
+		tfFloor.setText("");
 
-		if (tfDeptno.getText().contentEquals("") || tfFloor.getText().equals("") || tfDeptName.getText().equals("")) {
-			throw new InvalidCheckException();
-		}
+	}
+
+	@Override
+	public void setItem(Department item) {
+		tfDeptno.setText(item.getDeptNo() + "");
+		tfDeptName.setText(item.getDeptName() + "");
+		tfFloor.setText(item.getFloor() + "");
+
+	}
+
+	@Override
+	public Department getItem() {
+		validCheck();
 
 		int deptNo = Integer.parseInt(tfDeptno.getText().trim());
 		String deptName = tfDeptName.getText().trim();
@@ -81,20 +112,11 @@ public class DeptPanel extends JPanel {
 		return new Department(deptNo, deptName, floor);
 	}
 
-	public void setDepartment(Department department) {
-//		tfDeptno.setText(String.valueOf(department.getDeptNo()));
-		tfDeptno.setText(department.getDeptNo() + "");
-		tfDeptName.setText(department.getDeptName() + "");
-		tfFloor.setText(department.getFloor() + "");
-
-	}
-
-	public void clearTf() {
-//		tfDeptno.setText(String.valueOf(department.getDeptNo()));
-		tfDeptno.setText("");
-		tfDeptName.setText("");
-		tfFloor.setText("");
-
+	@Override
+	public void validCheck() {
+		if (tfDeptno.getText().contentEquals("") || tfFloor.getText().equals("") || tfDeptName.getText().equals("")) {
+			throw new InvalidCheckException();
+		}
 	}
 
 }

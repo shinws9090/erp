@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import erp.dto.Title;
 import erp.ui.exception.InvalidCheckException;
 
-public class TitlePanel extends JPanel {
+public class TitlePanel extends AbstractContentPanel<Title> {
 	private JTextField tfTitleNo;
 	private JTextField tfTitleName;
 
@@ -21,14 +21,13 @@ public class TitlePanel extends JPanel {
 		return tfTitleNo;
 	}
 	
-	/**
-	 * Create the panel.
-	 */
+	
+	
 	public TitlePanel() {
 
-		initialize();
 	}
-	private void initialize() {
+	
+	public void initialize() {
 		setBackground(new Color(255, 255, 240));
 		setBorder(new TitledBorder(new EmptyBorder(10, 10, 10, 10), "\uC9C1\uCC45\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new GridLayout(0, 2, 10, 10));
@@ -50,27 +49,46 @@ public class TitlePanel extends JPanel {
 		tfTitleName.setColumns(10);
 	}
 	
-	public void setTitle(Title title) {
-		tfTitleNo.setText(title.getTno()+"");
-		tfTitleName.setText(title.getTname());
+//	public void setTitle(Title title) {
+//		tfTitleNo.setText(title.getTno()+"");
+//		tfTitleName.setText(title.getTname());
+//		
+//	}
+//	public Title getTitle() {
+//		validCheck();
+//		
+//		 int no = Integer.parseInt(tfTitleNo.getText());
+//		 String name =tfTitleName.getText();
+//		return new Title(no, name);
+//	}
+	
+	@Override
+	public void clearTf() {
+		tfTitleNo.setText("");
+		tfTitleName.setText("");
 		
 	}
-	public Title getTitle() {
+
+	@Override
+	public void setItem(Title item) {
+		tfTitleNo.setText(item.getTno()+"");
+		tfTitleName.setText(item.getTname());
+		
+	}
+
+	@Override
+	public Title getItem() {
 		validCheck();
 		
 		 int no = Integer.parseInt(tfTitleNo.getText());
 		 String name =tfTitleName.getText();
 		return new Title(no, name);
 	}
-	private void validCheck() {
+
+	@Override
+	public void validCheck() {
 		if(tfTitleNo.getText().contentEquals("")||tfTitleName.getText().equals("")) {
 			throw new InvalidCheckException();
 		}
-		
-	}
-	public void clearTf() {
-		tfTitleNo.setText("");
-		tfTitleName.setText("");
-		
 	}
 }

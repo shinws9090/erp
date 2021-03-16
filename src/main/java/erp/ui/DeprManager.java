@@ -1,5 +1,6 @@
 package erp.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -17,28 +18,32 @@ import erp.dto.Department;
 import erp.dto.Employee;
 import erp.service.DeptService;
 import erp.ui.content.DeptPanel;
+import erp.ui.content.AbstractContentPanel;
+import erp.ui.content.TitlePanel;
 import erp.ui.exception.InvalidCheckException;
 import erp.ui.exception.NotSelectedException;
 import erp.ui.exception.SqlConstraintException;
+import erp.ui.list.AbstractCustomTablePanel;
 import erp.ui.list.DeptTablePanel;
 
 public class DeprManager extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton btnAdd;
-	private DeptPanel pDept;
+	private AbstractContentPanel<Department> pDept;
 	private JPanel pBtns;
 	private JButton btnClear;
-	private DeptTablePanel pList;
+	private AbstractCustomTablePanel<Department> pList;
 	private DeptService service;
 
 	public DeprManager() {
 		service = new DeptService();
 		initialize();
-		pList.loadData();
+		
 	}
 
 	private void initialize() {
+		setTitle("부서관리");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -47,7 +52,7 @@ public class DeprManager extends JFrame implements ActionListener {
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
 		pDept = new DeptPanel();
-		contentPane.add(pDept);
+		contentPane.add((DeptPanel) pDept);
 
 		pBtns = new JPanel();
 		contentPane.add(pBtns);
@@ -57,11 +62,14 @@ public class DeprManager extends JFrame implements ActionListener {
 		pBtns.add(btnAdd);
 
 		btnClear = new JButton("취소");
+		btnClear.addActionListener(this);
 		pBtns.add(btnClear);
 
 		pList = new DeptTablePanel();
+		((DeptTablePanel)pList).setService(service);
 		contentPane.add(pList);
-
+		pList.loadData();
+		
 		JPopupMenu popupMenu = createPopupMenu();
 		pList.setPopupMenu(popupMenu);
 
@@ -71,29 +79,29 @@ public class DeprManager extends JFrame implements ActionListener {
 		JPopupMenu popupMenu = new JPopupMenu();
 
 		JMenuItem update = new JMenuItem("수정");
-		update.addActionListener(aln);
+		update.addActionListener(popupMenuListner);
 		popupMenu.add(update);
 
 		JMenuItem delete = new JMenuItem("삭제");
-		delete.addActionListener(aln);
+		delete.addActionListener(popupMenuListner);
 		popupMenu.add(delete);
 
 		JMenuItem empListDept = new JMenuItem("소속사원");
-		empListDept.addActionListener(aln);
+		empListDept.addActionListener(popupMenuListner);
 		popupMenu.add(empListDept);
 
 		return popupMenu;
 	}
 
-	ActionListener aln = new ActionListener() {
+	ActionListener popupMenuListner = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
 			if (e.getActionCommand().equals("수정")) {
 				btnAdd.setText("수정");
-				pDept.setDepartment(pList.getItem());
-				pDept.getTfDeptno().setEditable(false);
+				pDept.setItem(pList.getItem());
+				((DeptPanel) pDept).getTfDeptno().setEditable(false);
 				
 			}
 			if (e.getActionCommand().equals("삭제")) {
@@ -121,6 +129,9 @@ public class DeprManager extends JFrame implements ActionListener {
 	};
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnClear) {
+			actionPerformedBtnClear(e);
+		}
 		try {
 			if (e.getSource() == btnAdd) {
 				if (e.getActionCommand().equals("추가"))
@@ -128,28 +139,32 @@ public class DeprManager extends JFrame implements ActionListener {
 				if (e.getActionCommand().equals("수정"))
 					actionPerformedBtnUpdate(e);
 			}
-		}catch(InvalidCheckException e1){
+		}catch(InvalidCheckException |SqlConstraintException e1){
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 	}
 
 	private void actionPerformedBtnUpdate(ActionEvent e) {
-		Department department = pDept.getDepartment();
+		Department department = pDept.getItem();
 		service.upDepartment(department);
 		JOptionPane.showMessageDialog(null, department + "수정완료");
 		pList.loadData();
 		pDept.clearTf();
 		btnAdd.setText("추가");
-		pDept.getTfDeptno().setEditable(true);
+		((DeptPanel) pDept).getTfDeptno().setEditable(true);
 		
 	}
 
 	protected void actionPerformedBtnAdd(ActionEvent e) {
-		Department department = pDept.getDepartment();
+		Department department = pDept.getItem();
 		System.out.println(department);
 		service.addDepartment(department);
 		JOptionPane.showMessageDialog(null, department + "추가완료");
 		pList.loadData();
+		pDept.clearTf();
+	}
+	protected void actionPerformedBtnClear(ActionEvent e) {
+		btnAdd.setText("추가");
 		pDept.clearTf();
 	}
 }

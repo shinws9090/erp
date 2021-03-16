@@ -19,12 +19,14 @@ import erp.dto.Department;
 import erp.dto.Employee;
 import erp.dto.Title;
 import erp.service.EmployeeService;
+import erp.ui.exception.InvalidCheckException;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class EmployeePanel extends JPanel implements ItemListener {
+public class EmployeePanel extends AbstractContentPanel<Employee> implements ItemListener {
 	private JTextField tfNo;
 	private JTextField tfName;
 	private JComboBox<Title> cmbTitle;
@@ -33,15 +35,12 @@ public class EmployeePanel extends JPanel implements ItemListener {
 	private JComboBox<Department> cmbDept;
 	private EmployeeService service;
 
-	/**
-	 * Create the panel.
-	 */
+
 	public EmployeePanel() {
 
-		initialize();
 	}
 
-	private void initialize() {
+	public void initialize() {
 		setBorder(
 				new TitledBorder(null, "\uC0AC\uC6D0\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
@@ -98,28 +97,7 @@ public class EmployeePanel extends JPanel implements ItemListener {
 
 	}
 
-	public void setEmployee(Employee emp) {
-
-//		int empno, String empname, Title title, Employee manager, int salary, Department dept
-
-		tfNo.setText(emp.getEmpno() + "");
-		tfName.setText(emp.getEmpname());
-		cmbTitle.setSelectedItem(emp.getTitle());
-		cmbManager.setSelectedItem(emp.getManager());
-		spinSalary.setValue(emp.getSalary());
-		cmbDept.setSelectedItem(emp.getDept());
-	}
-
-	public Employee getEmployee() {
-		int empno = Integer.parseInt(tfNo.getText().trim());
-		String empname = tfName.getText().trim();
-		Title title = (Title) cmbTitle.getSelectedItem();
-		Employee manager = (Employee) cmbManager.getSelectedItem();
-		int salary = (int) spinSalary.getValue();
-		Department dept = (Department) cmbDept.getSelectedItem();
-		return new Employee(empno, empname, title, manager, salary, dept);
-	}
-
+	@Override
 	public void clearTf() {
 		tfNo.setText("");
 		tfName.setText("");
@@ -144,22 +122,6 @@ public class EmployeePanel extends JPanel implements ItemListener {
 
 	}
 
-//	public void actionPerformed(ActionEvent e) {
-//		if (e.getSource() == cmbDept) {
-//			actionPerformedCmbDept(e);
-//		}
-//	}
-//	protected void actionPerformedCmbDept(ActionEvent e) {
-//		if(cmbDept.getSelectedIndex() != -1) {
-//		List<Employee> empList = service.showEmpListByDept((Department) cmbDept.getSelectedItem());
-//		DefaultComboBoxModel empModel =null;
-//		if(empList != null) {
-//		 empModel = new DefaultComboBoxModel<Employee>(new Vector<Employee>(empList));
-//		 cmbManager.setModel(empModel);
-//		}
-//		}
-//		
-//	}
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() == cmbDept) {
 			itemStateChangedCmbDept(e);
@@ -173,11 +135,43 @@ public class EmployeePanel extends JPanel implements ItemListener {
 			if (empList != null) {
 				empModel = new DefaultComboBoxModel<Employee>(new Vector<Employee>(empList));
 				cmbManager.setModel(empModel);
-			}else{
-				empList = service.showEmpListByTitle(new Title(1,"사장"));
+			} else {
+				empList = service.showEmpListByTitle(new Title(1, "사장"));
 				empModel = new DefaultComboBoxModel<Employee>(new Vector<Employee>(empList));
 				cmbManager.setModel(empModel);
 			}
 		}
+	}
+
+	@Override
+	public void setItem(Employee item) {
+		tfNo.setText(item.getEmpno() + "");
+		tfName.setText(item.getEmpname());
+		cmbTitle.setSelectedItem(item.getTitle());
+		cmbManager.setSelectedItem(item.getManager());
+		spinSalary.setValue(item.getSalary());
+		cmbDept.setSelectedItem(item.getDept());
+
+	}
+
+	@Override
+	public Employee getItem() {
+		validCheck();
+		int empno = Integer.parseInt(tfNo.getText().trim());
+		String empname = tfName.getText().trim();
+		Title title = (Title) cmbTitle.getSelectedItem();
+		Employee manager = (Employee) cmbManager.getSelectedItem();
+		int salary = (int) spinSalary.getValue();
+		Department dept = (Department) cmbDept.getSelectedItem();
+		return new Employee(empno, empname, title, manager, salary, dept);
+	}
+
+	@Override
+	public void validCheck() {
+		if (tfNo.getText().equals("") || tfName.getText().equals("") || cmbTitle.getSelectedIndex() == -1
+				|| cmbManager.getSelectedIndex() == -1 || cmbDept.getSelectedIndex() == -1) {
+			throw new InvalidCheckException();
+		}
+
 	}
 }

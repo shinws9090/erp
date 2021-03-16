@@ -1,25 +1,25 @@
 package erp;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import erp.ui.DeprManager;
+import erp.ui.EmployeeManager;
 import erp.ui.TitleManager;
-
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Main extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton btnTitle;
 	private JButton btnDept;
+	private JButton btnEmp;
 
 	/**
 	 * Launch the application.
@@ -59,11 +59,15 @@ public class Main extends JFrame implements ActionListener {
 		btnDept.addActionListener(this);
 		contentPane.add(btnDept);
 		
-		JButton btnEmp = new JButton("사원관리");
+		btnEmp = new JButton("사원관리");
+		btnEmp.addActionListener(this);
 		contentPane.add(btnEmp);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnEmp) {
+			actionPerformedBtnEmp(e);
+		}
 		if (e.getSource() == btnDept) {
 			actionPerformedBtnDept(e);
 		}
@@ -78,5 +82,10 @@ public class Main extends JFrame implements ActionListener {
 	protected void actionPerformedBtnDept(ActionEvent e) {
 		DeprManager frame = new DeprManager();
 		frame.setVisible(true);
+	}
+	protected void actionPerformedBtnEmp(ActionEvent e) {
+		EmployeeManager frame = new EmployeeManager();
+		frame.setVisible(true);
+		
 	}
 }

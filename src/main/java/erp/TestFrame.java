@@ -12,11 +12,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import erp.dto.Department;
 import erp.dto.Employee;
+import erp.dto.Title;
 import erp.service.EmployeeService;
 import erp.ui.content.EmployeePanel;
+import erp.ui.exception.InvalidCheckException;
 import erp.ui.list.DeptTablePanel;
 import erp.ui.list.TitleTablePanel;
+import erp.ui.list.EmployeeTablePanel;
 
 public class TestFrame extends JFrame implements ActionListener {
 
@@ -24,6 +28,8 @@ public class TestFrame extends JFrame implements ActionListener {
 	private JButton btnAdd;
 	private EmployeePanel pEmp;
 	private JButton btnClear;
+	private JButton btnSet;
+	private EmployeeTablePanel panel;
 
 	/**
 	 * Launch the application.
@@ -49,7 +55,7 @@ public class TestFrame extends JFrame implements ActionListener {
 	}
 	private void initialize() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 339);
+		setBounds(100, 100, 453, 503);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -67,12 +73,24 @@ public class TestFrame extends JFrame implements ActionListener {
 		btnAdd.addActionListener(this);
 		panel_3.add(btnAdd);
 		
+		btnSet = new JButton("Set");
+		btnSet.addActionListener(this);
+		panel_3.add(btnSet);
+		
 		btnClear = new JButton("취소");
 		btnClear.addActionListener(this);
 		panel_3.add(btnClear);
+		
+		panel = new EmployeeTablePanel();
+		panel.setService(service);
+		contentPane.add(panel);
+		panel.loadData();
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnSet) {
+			actionPerformedBtnSet(e);
+		}
 		if (e.getSource() == btnClear) {
 			actionPerformedBtnClear(e);
 		}
@@ -81,13 +99,22 @@ public class TestFrame extends JFrame implements ActionListener {
 		}
 	}
 	protected void actionPerformedBtnAdd(ActionEvent e) {
-		
-		Employee employee = pEmp.getEmployee();
-		JOptionPane.showMessageDialog(null, employee.toString2());
-		pEmp.clearTf();
+		try {
+			Employee employee = pEmp.getItem();
+			JOptionPane.showMessageDialog(null, employee.toString2());
+			pEmp.clearTf();
+			
+		}catch(InvalidCheckException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}
 		
 	}
 	protected void actionPerformedBtnClear(ActionEvent e) {
 		pEmp.clearTf();
+	}
+	protected void actionPerformedBtnSet(ActionEvent e) {
+		// 1003	조민희	3	4377	3000000	2
+		Employee emp = new Employee(1003,"조민희",new Title(3),new Employee(4377),3000000,new Department(2));
+		pEmp.setItem(emp);
 	}
 }

@@ -8,13 +8,13 @@ VW_EMPLOYEE
 as
 SELECT e.empno, 
 	   e.empname, 
-	   t.tno , 
-	   t.tname as title, 
-	   e.manager as manager_no, 
-	   m.empname as manager, 
+	   t.tno as title, 
+	   t.tname , 
+	   e.manager , 
+	   m.empname as mgrname, 
 	   e.salary,
-	   d.deptno ,
-	   d.deptname as dept,
+	   d.deptno as dept,
+	   d.deptname ,
 	   d.floor 
 FROM EMPLOYEE e JOIN TITLE t ON e.TITLE = t.TNO
 	LEFT JOIN EMPLOYEE m ON e.MANAGER = m.EMPNO
@@ -31,3 +31,5 @@ select empname,empno
 	join department d 
 	on e.dept = d.deptno 
 	where d.deptno = 1;
+
+select *from employee e where empno =1003;
