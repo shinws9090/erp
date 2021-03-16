@@ -24,10 +24,10 @@ public class TitlePanel extends AbstractContentPanel<Title> {
 	
 	
 	public TitlePanel() {
-
+		initialize();
 	}
 	
-	public void initialize() {
+	private void initialize() {
 		setBackground(new Color(255, 255, 240));
 		setBorder(new TitledBorder(new EmptyBorder(10, 10, 10, 10), "\uC9C1\uCC45\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		setLayout(new GridLayout(0, 2, 10, 10));

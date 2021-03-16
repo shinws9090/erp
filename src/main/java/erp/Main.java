@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import erp.ui.DeprManager;
+import erp.ui.DeptManaget;
 import erp.ui.EmployeeManager;
 import erp.ui.TitleManager;
 
@@ -77,14 +77,17 @@ public class Main extends JFrame implements ActionListener {
 	}
 	protected void actionPerformedBtnTitle(ActionEvent e) {
 		TitleManager frame = new TitleManager();
+		frame.setTitle("직책관리");
 		frame.setVisible(true);
 	}
 	protected void actionPerformedBtnDept(ActionEvent e) {
-		DeprManager frame = new DeprManager();
+		DeptManaget frame = new DeptManaget();
+		frame.setTitle("부서관리");
 		frame.setVisible(true);
 	}
 	protected void actionPerformedBtnEmp(ActionEvent e) {
 		EmployeeManager frame = new EmployeeManager();
+		frame.setTitle("사원관리");
 		frame.setVisible(true);
 		
 	}

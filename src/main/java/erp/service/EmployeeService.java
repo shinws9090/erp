@@ -40,7 +40,7 @@ public class EmployeeService {
 	public void removeEmployee(Employee employee) {
 		empDao.deleteEmployee(employee);
 	}
-	public void upEmployee(Employee employee) {
+	public void modifyEmployee(Employee employee) {
 		empDao.updateEmployee(employee);
 	}
 	

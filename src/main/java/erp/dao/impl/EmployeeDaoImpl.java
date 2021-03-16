@@ -123,7 +123,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			return pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new SqlConstraintException();
 		}
 	}

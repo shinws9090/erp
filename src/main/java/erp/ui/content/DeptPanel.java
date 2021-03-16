@@ -30,9 +30,9 @@ public class DeptPanel extends AbstractContentPanel<Department> {
 	}
 
 	public DeptPanel() {
-
+		initialize();
 	}
-	public void initialize() {
+	private void initialize() {
 		setForeground(Color.BLACK);
 		setBackground(new Color(255, 250, 240));
 		setBorder(new TitledBorder(null, "부서정보", TitledBorder.LEADING, TitledBorder.TOP, null, null));

@@ -1,5 +1,6 @@
 package erp.ui;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -18,8 +19,6 @@ public class TitleManager extends AbstractManager<Title> implements ActionListen
 
 	private TitleService service;
 
-	
-
 //	protected void initialize() {
 //		setTitle("직책관리");
 ////		pList = new TitleTablePanel();
@@ -29,15 +28,28 @@ public class TitleManager extends AbstractManager<Title> implements ActionListen
 //	}
 
 	@Override
-	public void setService() {
+	protected void setService() {
 		service = new TitleService();
-		((TitleTablePanel) pList).setService(service);
-		pList.loadData();
-
 	}
 
 	@Override
-	protected void removeItemService() {
+	protected void tableLoadData() {
+		((TitleTablePanel) pList).setService(service);
+		pList.loadData();
+	}
+
+	@Override
+	protected AbstractContentPanel<Title> getItemPanel() {
+		return new TitlePanel();
+	}
+
+	@Override
+	protected AbstractCustomTablePanel<Title> getItemTable() {
+		return new TitleTablePanel();
+	}
+
+	@Override
+	protected void actionPerformedMenuDelete() {
 		Title delItem = pList.getItem();
 		service.removeTitle(delItem);
 		JOptionPane.showMessageDialog(null, delItem + "삭제완료");
@@ -45,51 +57,41 @@ public class TitleManager extends AbstractManager<Title> implements ActionListen
 	}
 
 	@Override
-	protected void addItemService() {
-		Title item = pCotent.getItem();
-		service.addTitle(item);
-		JOptionPane.showMessageDialog(null, item + "추가완료");
-		pList.loadData();
-		pCotent.clearTf();
-
+	public void actionPerformedMenuUpdate() {
+		pContent.setItem((Title) pList.getItem());
+		((TitlePanel) pContent).getTfTitleNo().setEditable(false);
+		btnAdd.setText("수정");
 	}
 
 	@Override
-	protected void updateItemService() {
-		Title item = pCotent.getItem();
-		service.upTitle(item);
-		JOptionPane.showMessageDialog(null, item + "수정완료");
-		pList.loadData();
-		pCotent.clearTf();
-		btnAdd.setText("추가");
-		((TitlePanel) pCotent).getTfTitleNo().setEditable(true);
-
-	}
-
-	@Override
-	protected void showEqualsByGubun() {
+	protected void actionPerformedMenuGubun() {
 		Title empTilte = pList.getItem();
 		List<Employee> empList = service.showEmpByTitle(empTilte);
 		Object[] arr = empList.toArray();
-		
-		
+
 		JOptionPane.showInputDialog(null, "", "동일직책사원", JOptionPane.QUESTION_MESSAGE, null, arr, JOptionPane.NO_OPTION);
 	}
 
 	@Override
-	public AbstractContentPanel<Title> getItemPanel() {
-		return new TitlePanel();
+	protected void actionPerformedBtnAdd(ActionEvent e) {
+		Title item = pContent.getItem();
+		service.addTitle(item);
+		JOptionPane.showMessageDialog(null, item + "추가완료");
+		pList.loadData();
+		pContent.clearTf();
+
 	}
 
 	@Override
-	public AbstractCustomTablePanel<Title> getItemTable() {
-		return new TitleTablePanel();
-	}
-
-	@Override
-	protected void clearItem() {
+	protected void actionPerformedBtnUp(ActionEvent e) {
+		Title item = pContent.getItem();
+		service.upTitle(item);
+		JOptionPane.showMessageDialog(null, item + "수정완료");
+		pList.loadData();
+		pContent.clearTf();
 		btnAdd.setText("추가");
-		((TitlePanel)pCotent).clearTf();
-		
+		((TitlePanel) pContent).getTfTitleNo().setEditable(true);
+
 	}
+
 }

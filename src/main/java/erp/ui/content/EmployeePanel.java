@@ -34,13 +34,17 @@ public class EmployeePanel extends AbstractContentPanel<Employee> implements Ite
 	private JSpinner spinSalary;
 	private JComboBox<Department> cmbDept;
 	private EmployeeService service;
+	
 
-
-	public EmployeePanel() {
-
+	public JTextField getTfNo() {
+		return tfNo;
 	}
 
-	public void initialize() {
+	public EmployeePanel() {
+		initialize();
+	}
+
+	private void initialize() {
 		setBorder(
 				new TitledBorder(null, "\uC0AC\uC6D0\uC815\uBCF4", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BorderLayout(0, 0));
